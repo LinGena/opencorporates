@@ -40,7 +40,8 @@ if __name__ == "__main__":
     # check_db()
     # accounts()
     # parse()
-    parse_thread()
+    # parse_thread()
+    print('HERE')
 
 
 
