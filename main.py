@@ -6,6 +6,7 @@ from threading import Thread
 from scraper.scraper import Scraper
 from config.settings import settings
 
+
 warnings.filterwarnings('ignore', message='Unverified HTTPS request')
 
 
