@@ -15,8 +15,9 @@ from utils.logger import Logger
 
 
 class UndetectedDriver:
-    def __init__(self, proxy:str = None, is_capsolver: bool = False, cookies: str = None):
+    def __init__(self, proxy:str = None, is_capsolver: bool = False, cookies: str = None, first_start: bool = False):
         self.proxy = proxy
+        self.first_start = first_start
         self.cookies = cookies
         self.is_capsolver = is_capsolver
         self.logger = Logger().get_logger(__name__)
@@ -30,6 +31,7 @@ class UndetectedDriver:
         
     def set_display(self):
         if not settings.sets.debug:
+            os.environ['PYVIRTUALDISPLAY_DISPLAYFD'] = '0'
             self._display = Display(visible=False, size=(1920, 1080))
             self._display.start()
 
@@ -75,10 +77,22 @@ class UndetectedDriver:
 
     def _create_driver(self):
         os.makedirs(self.folder_path, exist_ok=True)
-        driver = uc_webdriver.Chrome(version_main=settings.sets.driver_version, 
-                                     options=self.__options, 
-                                     user_data_dir=self.folder_path)
+        if settings.sets.debug:
+            driver = uc_webdriver.Chrome(version_main=settings.sets.driver_version,
+                                        user_data_dir=self.folder_path,
+                                        options=self.__options)
+        else:
+            if self.first_start:
+                driver = uc_webdriver.Chrome(version_main=settings.sets.driver_version,
+                                            user_data_dir=self.folder_path,
+                                            options=self.__options)
+            else:
+                driver = uc_webdriver.Chrome(version_main=settings.sets.driver_version,
+                                            user_data_dir=self.folder_path,
+                                            user_multi_procs=True,
+                                            options=self.__options)
         return driver
+
     
     def _close_driver(self):
         if hasattr(self, "driver"):

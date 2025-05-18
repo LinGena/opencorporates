@@ -12,12 +12,12 @@ import time
 
 
 class GetSession(UndetectedDriver):
-    def __init__(self, proxy_id: int = 1):
+    def __init__(self, proxy_id: int = 1, first_start: bool = False):
         self.domain_name = "https://opencorporates.com"
         self.proxies_list = get_proxies()
         self.id_cookies = None
         proxy = self.get_proxy()
-        self.initialize_driver(proxy)
+        self.initialize_driver(proxy, first_start)
         self.geolocator = Nominatim(user_agent=f"my_app_{proxy_id}", proxies={'http':proxy,'https':proxy}, timeout=15)  
 
     def get_proxy(self) -> dict:
@@ -25,13 +25,13 @@ class GetSession(UndetectedDriver):
         random.shuffle(self.proxies_list)
         return self.proxies_list[0]
 
-    def initialize_driver(self, proxy: str):
+    def initialize_driver(self, proxy: str, first_start: bool = False):
         # data_cookies = DbCookies().get_cookies()
         # if not data_cookies:
         #     raise Exception('There is no free cookies')
         # self.id_cookies = data_cookies['id']
         # super().__init__(proxy=proxy, is_capsolver=False, cookies=data_cookies['cookies'])
-        super().__init__(proxy=proxy, is_capsolver=False)
+        super().__init__(proxy=proxy, is_capsolver=False, first_start=first_start)
         # self.check_current_proxy(proxy)
         self.add_to_driver_cookies()
 

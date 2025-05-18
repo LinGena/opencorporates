@@ -7,8 +7,8 @@ from utils.func import *
 
 
 class Scraper(GetSession, DbCompanies):
-    def __init__(self):
-        GetSession.__init__(self)
+    def __init__(self, first_start: bool = False):
+        GetSession.__init__(self, first_start)
         DbCompanies.__init__(self)
         
     def run(self, urls: list = None) -> None:

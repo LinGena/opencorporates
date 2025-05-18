@@ -15,20 +15,22 @@ def accounts():
         CreateAccount().create_account_cookies()
 
 
-def parse():
+def parse(first_start: bool = False):
     while True:
         try:
             # url = ['https://opencorporates.com/companies/us_ca/0806592']
             # Scraper().run(url)
-            Scraper().run()
+            Scraper(first_start).run()
         except Exception as ex:
             print(ex)
 
 def parse_thread():
+    first_start = True
     for i in range(settings.sets.count_thred):
-        t = Thread(target=parse)
+        t = Thread(target=parse, args=(first_start,))
         t.start()
         print(f'Thread {i} started')
+        first_start = False
         time.sleep(30)
 
 
