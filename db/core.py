@@ -45,7 +45,8 @@ class Db():
         return rows
         
     def close_connection(self) -> None:
-        self.connection.close()
+        if hasattr(self, 'connection'):
+            self.connection.close()
 
 
 class IsDbCreated():

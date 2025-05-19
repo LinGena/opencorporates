@@ -42,3 +42,7 @@ class DbCompanies(Db):
                 sql = f"INSERT INTO {self.table_companies} (url) VALUES ('{url}')"
                 self.insert(sql)
                 print(f"Inserted URL: {url}")
+
+    def clear_processing_status(self) -> None:
+        sql = f"UPDATE {self.table_companies} SET status=1 where status=2"
+        self.insert(sql)

@@ -6,6 +6,7 @@ from threading import Thread
 from scraper.scraper import Scraper
 from config.settings import settings
 from proxy.proxy_manager import get_proxies
+from db.db_companies import DbCompanies
 
 warnings.filterwarnings('ignore', message='Unverified HTTPS request')
 
@@ -23,6 +24,7 @@ def parse(proxies_list: list, first_start: bool = False):
             print(ex)
 
 def parse_thread():
+    DbCompanies().clear_processing_status()
     proxies_list = get_proxies()
     first_start = True
     for i in range(settings.sets.count_thred):
