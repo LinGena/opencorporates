@@ -5,16 +5,17 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from geopy.geocoders import Nominatim
 from db.db_cookies import DbCookies
-from proxy.proxy_manager import get_proxies
+# from proxy.proxy_manager import get_proxies
 # from proxy.get_proxy import get_proxy
 from utils.func import *
 import time
 
 
 class GetSession(UndetectedDriver):
-    def __init__(self, proxy_id: int = 1, first_start: bool = False):
+    def __init__(self, proxies_list: list, proxy_id: int = 1, first_start: bool = False):
         self.domain_name = "https://opencorporates.com"
-        self.proxies_list = get_proxies()
+        # self.proxies_list = get_proxies()
+        self.proxies_list = proxies_list
         self.id_cookies = None
         proxy = self.get_proxy()
         self.initialize_driver(proxy, first_start)

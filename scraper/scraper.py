@@ -1,14 +1,13 @@
 from bs4 import BeautifulSoup
 from datetime import datetime
 from scraper.session import GetSession
-# from scraper.session_requests import GetSession
 from db.db_companies import DbCompanies
 from utils.func import *
 
 
 class Scraper(GetSession, DbCompanies):
-    def __init__(self, first_start: bool = False):
-        GetSession.__init__(self, first_start)
+    def __init__(self, proxies_list: list, first_start: bool = False):
+        GetSession.__init__(self, proxies_list, first_start=first_start)
         DbCompanies.__init__(self)
         
     def run(self, urls: list = None) -> None:
@@ -17,12 +16,6 @@ class Scraper(GetSession, DbCompanies):
             for task in tasks:
                 id = task[0]
                 url = task[1]
-            # id = 2
-            # urls = [
-            #    'https://opencorporates.com/companies/us_ca/0806592'
-            # ]
-            # i = 2
-            # for url in urls:
                 print('-----', url)
                 self.subsidiaries_link_companies = set()
                 src = self.get_page_content(url)
@@ -33,8 +26,6 @@ class Scraper(GetSession, DbCompanies):
                 if self.subsidiaries_link_companies:
                     self.check_urls_in_table(list(self.subsidiaries_link_companies))
                     return self.run(urls=list(self.subsidiaries_link_companies))
-                # write_to_file_json(f'result_{i}.json', datas)
-                # i+=1
         except Exception as ex:
             self.logger.error(ex)
             if src:
