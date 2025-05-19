@@ -5,8 +5,6 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from geopy.geocoders import Nominatim
 from db.db_cookies import DbCookies
-# from proxy.proxy_manager import get_proxies
-# from proxy.get_proxy import get_proxy
 from utils.func import *
 import time
 
@@ -14,7 +12,6 @@ import time
 class GetSession(UndetectedDriver):
     def __init__(self, proxies_list: list, proxy_id: int = 1, first_start: bool = False):
         self.domain_name = "https://opencorporates.com"
-        # self.proxies_list = get_proxies()
         self.proxies_list = proxies_list
         self.id_cookies = None
         proxy = self.get_proxy()
@@ -22,16 +19,10 @@ class GetSession(UndetectedDriver):
         self.geolocator = Nominatim(user_agent=f"my_app_{proxy_id}", proxies={'http':proxy,'https':proxy}, timeout=15)  
 
     def get_proxy(self) -> dict:
-        # return get_proxy()
         random.shuffle(self.proxies_list)
         return self.proxies_list[0]
 
     def initialize_driver(self, proxy: str, first_start: bool = False):
-        # data_cookies = DbCookies().get_cookies()
-        # if not data_cookies:
-        #     raise Exception('There is no free cookies')
-        # self.id_cookies = data_cookies['id']
-        # super().__init__(proxy=proxy, is_capsolver=False, cookies=data_cookies['cookies'])
         super().__init__(proxy=proxy, is_capsolver=False, first_start=first_start)
         # self.check_current_proxy(proxy)
         self.add_to_driver_cookies()

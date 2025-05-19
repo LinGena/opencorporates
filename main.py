@@ -18,8 +18,6 @@ def accounts():
 def parse(proxies_list: list, first_start: bool = False):
     while True:
         try:
-            # url = ['https://opencorporates.com/companies/us_ca/0806592']
-            # Scraper().run(url)
             Scraper(proxies_list, first_start).run()
         except Exception as ex:
             print(ex)
