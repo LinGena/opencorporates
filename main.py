@@ -25,7 +25,8 @@ def parse(proxies_list: list, first_start: bool = False):
         except Exception as ex:
             print(ex)
         finally:
-            client.close_driver()
+            if 'client' in locals() and hasattr(client, 'close_driver'):
+                client.close_driver()
 
 def parse_thread():
     DbCompanies().clear_processing_status()
