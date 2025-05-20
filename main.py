@@ -19,9 +19,13 @@ def accounts():
 def parse(proxies_list: list, first_start: bool = False):
     while True:
         try:
-            Scraper(proxies_list, first_start).run()
+            client = Scraper(proxies_list, first_start)
+            client.run()
+            first_start = False
         except Exception as ex:
             print(ex)
+        finally:
+            client.close_driver()
 
 def parse_thread():
     DbCompanies().clear_processing_status()
