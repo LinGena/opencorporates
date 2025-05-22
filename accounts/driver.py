@@ -29,11 +29,11 @@ class UndetectedDriver:
         self.wait = lambda time_w, criteria: WebDriverWait(self.driver, time_w).until(
             EC.presence_of_element_located(criteria))
         
-    def set_display(self):
-        if not settings.sets.debug:
-            os.environ['PYVIRTUALDISPLAY_DISPLAYFD'] = '0'
-            self._display = Display(visible=False, size=(1920, 1080))
-            self._display.start()
+    # def set_display(self):
+    #     if not settings.sets.debug:
+    #         os.environ['PYVIRTUALDISPLAY_DISPLAYFD'] = '0'
+    #         self._display = Display(visible=False, size=(1920, 1080))
+    #         self._display.start()
 
     def close_driver(self):
         self._close_driver()
