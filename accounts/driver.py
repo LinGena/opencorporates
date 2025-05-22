@@ -22,7 +22,7 @@ class UndetectedDriver:
         self.is_capsolver = is_capsolver
         self.logger = Logger().get_logger(__name__)
         self.folder_path = f'{settings.base_path.dir}/accounts/chrome_data/{str(uuid.uuid4())}'
-        self.set_display()
+        # self.set_display()
         self.__options = uc_webdriver.ChromeOptions()
         self._set_chromeoptions()
         self.driver = self._create_driver()
@@ -101,11 +101,11 @@ class UndetectedDriver:
                 self.driver.quit()
             except Exception as ex:
                 self.logger.debug(ex)
-        if hasattr(self, '_display'):
-            try:
-                self._display.stop()
-            except:
-                pass
+        # if hasattr(self, '_display'):
+        #     try:
+        #         self._display.stop()
+        #     except:
+        #         pass
     
     def _del_folder(self):
         if os.path.exists(self.folder_path):
