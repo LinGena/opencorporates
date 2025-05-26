@@ -46,3 +46,5 @@ class DbCompanies(Db):
     def clear_processing_status(self) -> None:
         sql = f"UPDATE {self.table_companies} SET status=1 where status=2"
         self.insert(sql)
+        sql = f'UPDATE {self.table_cookies} SET status=0 where id>0'
+        self.insert(sql)
