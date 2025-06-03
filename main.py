@@ -48,7 +48,7 @@ def parse_thread():
         t.start()
         print(f'Thread {i} started')
         first_start = False
-        time.sleep(30)
+        time.sleep(5)
 
 
 def check_db():
