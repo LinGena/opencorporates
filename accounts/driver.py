@@ -2,7 +2,6 @@ import os
 import shutil
 import time
 import uuid
-from pyvirtualdisplay import Display
 import undetected_chromedriver as uc_webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -22,18 +21,11 @@ class UndetectedDriver:
         self.is_capsolver = is_capsolver
         self.logger = Logger().get_logger(__name__)
         self.folder_path = f'{settings.base_path.dir}/accounts/chrome_data/{str(uuid.uuid4())}'
-        # self.set_display()
         self.__options = uc_webdriver.ChromeOptions()
         self._set_chromeoptions()
         self.driver = self._create_driver()
         self.wait = lambda time_w, criteria: WebDriverWait(self.driver, time_w).until(
             EC.presence_of_element_located(criteria))
-        
-    # def set_display(self):
-    #     if not settings.sets.debug:
-    #         os.environ['PYVIRTUALDISPLAY_DISPLAYFD'] = '0'
-    #         self._display = Display(visible=False, size=(1920, 1080))
-    #         self._display.start()
 
     def close_driver(self):
         self._close_driver()
@@ -64,6 +56,7 @@ class UndetectedDriver:
         self.__options.add_argument('--disable-software-rasterizer')
         self.__options.add_argument('--disable-application-cache')
         self.__options.add_argument('--disk-cache-size=0')
+        self.__options.add_argument('--headless=new')
         if self.proxy:
             self.__options.add_argument("--disable-features=WebRtcHideLocalIpsWithMdns")
             prefs = {
@@ -93,7 +86,6 @@ class UndetectedDriver:
                                             options=self.__options)
         return driver
 
-    
     def _close_driver(self):
         if hasattr(self, "driver"):
             try:
@@ -101,11 +93,6 @@ class UndetectedDriver:
                 self.driver.quit()
             except Exception as ex:
                 self.logger.debug(ex)
-        # if hasattr(self, '_display'):
-        #     try:
-        #         self._display.stop()
-        #     except:
-        #         pass
     
     def _del_folder(self):
         if os.path.exists(self.folder_path):
