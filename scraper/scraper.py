@@ -22,6 +22,9 @@ class Scraper(GetSession, DbCompanies):
                 if not src:
                     self.update_status(id)
                 datas = self.get_page_datas(src, url)
+                print('===')
+                print(datas)
+                print('===')
                 self.update_datas(id, datas)
                 if self.subsidiaries_link_companies:
                     self.check_urls_in_table(list(self.subsidiaries_link_companies))
