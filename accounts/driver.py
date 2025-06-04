@@ -87,15 +87,14 @@ class UndetectedDriver:
         return driver
 
     def _close_driver(self):
-        if hasattr(self, "driver"):
-            try:
-                self.driver.close()
-            except:
-                pass
-            try:
-                self.driver.quit()
-            except Exception as ex:
-                pass
+        try:
+            self.driver.close()
+        except:
+            pass
+        try:
+            self.driver.quit()
+        except:
+            pass
     
     def _del_folder(self):
         if os.path.exists(self.folder_path):
