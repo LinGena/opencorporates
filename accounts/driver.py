@@ -90,14 +90,17 @@ class UndetectedDriver:
         if hasattr(self, "driver"):
             try:
                 self.driver.close()
+            except:
+                pass
+            try:
                 self.driver.quit()
             except Exception as ex:
-                self.logger.debug(ex)
+                pass
     
     def _del_folder(self):
         if os.path.exists(self.folder_path):
             try:
-                time.sleep(1)
+                time.sleep(5)
                 shutil.rmtree(self.folder_path)
             except Exception as ex:
                 self.logger.debug(ex)
