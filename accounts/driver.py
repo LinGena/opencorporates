@@ -20,7 +20,8 @@ class UndetectedDriver:
         self.cookies = cookies
         self.is_capsolver = is_capsolver
         self.logger = Logger().get_logger(__name__)
-        self.folder_path = f'{settings.base_path.dir}/accounts/chrome_data/{str(uuid.uuid4())}'
+        # self.folder_path = f'{settings.base_path.dir}/accounts/chrome_data/{str(uuid.uuid4())}'
+        self.folder_path = os.path.join(os.getcwd(), "chrome_data", str(uuid.uuid4()))
         self.__options = uc_webdriver.ChromeOptions()
         self._set_chromeoptions()
         self.driver = self._create_driver()

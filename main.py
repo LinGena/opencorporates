@@ -8,6 +8,7 @@ from config.settings import settings
 from proxy.proxy_manager import get_proxies
 from db.db_companies import DbCompanies
 import os
+import shutil
 from pyvirtualdisplay import Display
 from utils.func import write_to_file_json, load_from_file_json
 
@@ -42,6 +43,8 @@ def parse(first_start: bool = False):
 
 
 def parse_thread():
+    if os.path.exists('chrome_data'):
+        shutil.rmtree('chrome_data')
     DbCompanies().clear_processing_status()
     proxies_list = get_proxies()
     write_to_file_json('proxy/proxies_list.json', proxies_list)
