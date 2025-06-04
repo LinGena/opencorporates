@@ -47,7 +47,7 @@ def parse_thread():
     write_to_file_json('proxy/proxies_list.json', proxies_list)
     first_start = True
     for i in range(settings.sets.count_thred):
-        t = Thread(target=parse, args=(first_start))
+        t = Thread(target=parse, args=(first_start,))
         t.start()
         print(f'Thread {i} started')
         first_start = False
