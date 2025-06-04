@@ -12,3 +12,4 @@ chrome_data
 *.tsv
 extensions
 server.txt
+proxies_list.json

@@ -9,6 +9,7 @@ from proxy.proxy_manager import get_proxies
 from db.db_companies import DbCompanies
 import os
 from pyvirtualdisplay import Display
+from utils.func import write_to_file_json, load_from_file_json
 
 warnings.filterwarnings('ignore', message='Unverified HTTPS request')
 
@@ -19,12 +20,13 @@ def accounts():
         CreateAccount().create_account_cookies()
 
 
-def parse(proxies_list: list, first_start: bool = False):
+def parse(first_start: bool = False):
     while True:
         # if not settings.sets.debug:
         #     _display = Display(visible=False, size=(1920, 1080))
         #     _display.start()
         try:
+            proxies_list = load_from_file_json('proxy/proxies_list.json')
             client = Scraper(proxies_list, first_start)
             client.run()
             first_start = False
@@ -42,9 +44,10 @@ def parse(proxies_list: list, first_start: bool = False):
 def parse_thread():
     DbCompanies().clear_processing_status()
     proxies_list = get_proxies()
+    write_to_file_json('proxy/proxies_list.json', proxies_list)
     first_start = True
     for i in range(settings.sets.count_thred):
-        t = Thread(target=parse, args=(proxies_list, first_start))
+        t = Thread(target=parse, args=(first_start))
         t.start()
         print(f'Thread {i} started')
         first_start = False
