@@ -32,7 +32,7 @@ def parse(first_start: bool = False):
             client.run()
             first_start = False
         except Exception as ex:
-            print(ex)
+            print('[PARSE]',ex)
         finally:
             if 'client' in locals() and hasattr(client, 'close_driver'):
                 client.close_driver()
