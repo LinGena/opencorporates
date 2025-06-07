@@ -11,7 +11,9 @@ import os
 import shutil
 from pyvirtualdisplay import Display
 from utils.func import write_to_file_json, load_from_file_json
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import (
+    ThreadPoolExecutor, wait, FIRST_COMPLETED
+)
 import undetected_chromedriver as uc
 
 warnings.filterwarnings('ignore', message='Unverified HTTPS request')
@@ -43,31 +45,25 @@ def parse(first_start: bool = False):
         #     _display.stop()
 
 
-# def parse_thread():
-    # first_start = True
-    # for i in range(settings.sets.count_thred):
-    #     t = Thread(target=parse, args=(first_start,))
-    #     t.start()
-    #     print(f'Thread {i} started')
-    #     first_start = False
-    #     time.sleep(5)
 def parse_thread():
-    workers = settings.sets.count_thred        
+    workers = settings.sets.count_thred        # желаемое число активных задач
     with ThreadPoolExecutor(max_workers=workers) as pool:
-        futures = set()
+        futures = {pool.submit(parse, i == 0) for i in range(workers)}
         for i in range(workers):
-            fut = pool.submit(parse, i == 0) 
-            futures.add(fut)
             print(f'Thread {i} started')
-            time.sleep(5)
-        while futures:
-            done, _ = as_completed(futures, timeout=None), futures
+            time.sleep(5)                      # ступенчатый запуск
+
+        while True:
+            # ждём, пока хоть один future завершится (успех или исключение)
+            done, _ = wait(futures, return_when=FIRST_COMPLETED)
+
             for f in done:
-                futures.remove(f)
+                futures.remove(f)              # убираем старый
                 if exc := f.exception():
                     print('[POOL EXCEPTION]', exc)
-                futures.add(pool.submit(parse, False))
 
+                # ставим новый parse-задачу
+                futures.add(pool.submit(parse, False))
 
 
 def check_db():
