@@ -2,6 +2,7 @@ from accounts.create import CreateAccount
 from db.core import IsDbCreated, IsDbTable
 import warnings
 import time
+import sys
 from threading import Thread
 from scraper.scraper import Scraper
 from config.settings import settings
@@ -15,6 +16,7 @@ from concurrent.futures import (
     ThreadPoolExecutor, wait, FIRST_COMPLETED
 )
 import undetected_chromedriver as uc
+
 
 warnings.filterwarnings('ignore', message='Unverified HTTPS request')
 
@@ -34,13 +36,21 @@ def parse(first_start: bool = False):
         client = Scraper(proxies_list, first_start)
         client.run()
         first_start = False
+    except OSError as ex:
+        if ex.errno == 11:
+            print('restarting container')
+            os._exit(1) 
     except Exception as ex:
         print('[PARSE]',ex)
     finally:
-        if 'client' in locals() and hasattr(client, 'close_driver'):
-            client.close_driver()
-        if 'client' in locals() and hasattr(client, 'close_connection'):
-            client.close_connection()
+        if 'client' in locals():
+            try:    
+                client.close_driver()
+            except: pass
+            try:    
+                client.close_connection()
+            except: pass
+        time.sleep(0.2)
         # if '_display' in locals():
         #     _display.stop()
 
