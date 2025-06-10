@@ -54,7 +54,6 @@ def parse(first_start: bool = False):
         if '_display' in locals():
             _display.stop()
 
-
 def parse_thread():
     workers = settings.sets.count_thred        # желаемое число активных задач
     with ThreadPoolExecutor(max_workers=workers) as pool:
@@ -90,12 +89,23 @@ def prepare_environment():
 
 def first_run():
     try:
-        options = uc.ChromeOptions()
-        options.add_argument('--headless=new')
-        driver = uc.Chrome(version_main=int(os.getenv('DRIVER_VERSION')), options=options)
-        driver.quit()
-    except:
-        pass
+        if not settings.sets.debug:
+            _display = Display(visible=False, size=(1920, 1080))
+            _display.start()
+        client = uc.Chrome(version_main=int(os.getenv('DRIVER_VERSION')))
+    except Exception as ex:
+        print('First start', ex)
+    finally:
+        if 'client' in locals():
+            try:    
+                client.close()
+            except: pass
+            try:    
+                client.quit()
+            except: pass
+        if '_display' in locals():
+            _display.stop()
+
 
 if __name__ == "__main__":
     # check_db()
