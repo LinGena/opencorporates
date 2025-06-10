@@ -88,6 +88,7 @@ def prepare_environment():
     write_to_file_json('proxy/proxies_list.json', proxies_list)
 
 def first_run():
+    time.sleep(30)
     try:
         if not settings.sets.debug:
             _display = Display(visible=False, size=(1920, 1080))
