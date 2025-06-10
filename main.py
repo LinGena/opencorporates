@@ -61,7 +61,7 @@ def parse_thread():
         futures = {pool.submit(parse, i == 0) for i in range(workers)}
         for i in range(workers):
             print(f'Thread {i} started')
-            time.sleep(5)                      # ступенчатый запуск
+            time.sleep(20)                      # ступенчатый запуск
 
         while True:
             # ждём, пока хоть один future завершится (успех или исключение)
