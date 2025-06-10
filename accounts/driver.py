@@ -57,7 +57,7 @@ class UndetectedDriver:
         self.__options.add_argument('--disable-software-rasterizer')
         self.__options.add_argument('--disable-application-cache')
         self.__options.add_argument('--disk-cache-size=0')
-        self.__options.add_argument('--headless=new')
+        # self.__options.add_argument('--headless=new')
         if self.proxy:
             self.__options.add_argument("--disable-features=WebRtcHideLocalIpsWithMdns")
             prefs = {

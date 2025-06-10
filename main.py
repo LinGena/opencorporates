@@ -28,9 +28,9 @@ def accounts():
 
 
 def parse(first_start: bool = False):
-    # if not settings.sets.debug:
-    #     _display = Display(visible=False, size=(1920, 1080))
-    #     _display.start()
+    if not settings.sets.debug:
+        _display = Display(visible=False, size=(1920, 1080))
+        _display.start()
     try:
         proxies_list = load_from_file_json('proxy/proxies_list.json')
         client = Scraper(proxies_list, first_start)
@@ -51,8 +51,8 @@ def parse(first_start: bool = False):
                 client.close_connection()
             except: pass
         time.sleep(0.2)
-        # if '_display' in locals():
-        #     _display.stop()
+        if '_display' in locals():
+            _display.stop()
 
 
 def parse_thread():
